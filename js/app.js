@@ -1,7 +1,7 @@
 const searchFood=()=>{
   let searchField = document.getElementById("search-field");
   const searchText=searchField.value;
-
+  
   //Clear input field
   searchField.value = "";
 
@@ -13,16 +13,26 @@ const searchFood=()=>{
   else{
     const emptyMessage = document.getElementById("empty-message").style.display="none";
     const url =`https://www.themealdb.com/api/json/v1/1/search.php?s=${searchText}`
-  fetch(url)
+   fetch(url)
   .then(res=>res.json())
   .then(data=>displayFood(data.meals))
   }
 }
 
+
+
 const displayFood=(meals)=>{
       const searchResult = document.getElementById("search-result");
     searchResult.textContent="";
-      meals.forEach(meal=>{
+    const unknownData = document.getElementById("unknown-data");
+
+    if(!meals){
+      unknownData.innerText="Nothing Found";
+      unknownData.style.display = "block";
+      
+
+    }else{
+      meals?.forEach(meal=>{
         const div = document.createElement("div");
         div.classList.add("col");
         div.innerHTML=`
@@ -35,7 +45,11 @@ const displayFood=(meals)=>{
  
          </div> `;
          searchResult.appendChild(div);
+         unknownData.style.display = "none";
      }) 
+
+    }
+      
          
 }
 
